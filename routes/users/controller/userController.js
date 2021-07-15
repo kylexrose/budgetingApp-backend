@@ -10,18 +10,21 @@ async function signup(req, res, next){
         mobileNumber,
         email,
         username,
+        password,
     } = req.body;
 
-    const {errorObj} = res.locals;
+    // const {errorObj} = res.locals;
 
-    if(Object.keys(errorObj) > 0){
-        return res.status(500).json({message: "failure", payload: errorObj})
-    }
+    // if(Object.keys(errorObj) > 0){
+    //     return res.status(500).json({message: "failure", payload: errorObj})
+    // }
 
     try{
+        console.log("try")
         let salt = await bcrypt.genSalt(12);
+        console.log("salt")
         let hashedPassword = await bcrypt.hash(password, salt);
-
+        console.log("hash")
         const createdUser = new User({
             firstName, 
             lastName,
@@ -30,7 +33,7 @@ async function signup(req, res, next){
             mobileNumber,
             password: hashedPassword,
         })
-
+        console.log(createdUser)
         await createdUser.save();
         res.json({message: "success - user created"});
     }catch(e){
@@ -39,7 +42,7 @@ async function signup(req, res, next){
 }
 
 async function login(req, res){
-    const {email, password} = req.body;
+    const {username, password} = req.body;
 
     const {errorObj} = res.locals;
 
@@ -79,4 +82,15 @@ async function login(req, res){
     }
 }
 
-module.exports = {signup, login};
+async function editUser(req, res, next){
+    const {username} = req.params;
+    console.log(username)
+    try{
+        const foundUser = await User.findOneAndUpdate({username: username}, req.body, {new : true})
+        res.json({message: "profile updated", payload: foundUser})
+    }catch(e){
+        res.json({message: "error", error: e})
+    }
+}
+
+module.exports = {signup, login, editUser};

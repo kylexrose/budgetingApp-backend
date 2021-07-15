@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
         type: String,
     },
     mobileNumber:{
-        type: Number,
+        type: String,
         unique: true,
     },
     email: {
@@ -18,7 +18,9 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         unique: true,
-    }
+    },
+    expenses: [{type:mongoose.Schema.ObjectId, ref: "expense"}],
+    incomes: [{type:mongoose.Schema.ObjectId, ref: "income"}]
 })
 
 module.exports = mongoose.model('user', userSchema);

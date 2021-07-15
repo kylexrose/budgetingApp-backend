@@ -1,41 +1,38 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+//Pull in the packages from express and morgan
+const express = require("express");
+const logger = require("morgan"); 
+const cors = require("cors");  
 
-var app = express();
+//start an express app
+const app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+const ErrorMessageHandlerClass = require("./routes/utils/ErrorMessageHandlerClass");
+const errorController = require("./routes/utils/errorController");
+const userRouter = require("./routes/users/userRouter");
+const expenseRouter = require("./routes/expenses/expensesRouter");
+const incomeRouter = require("./routes/income/incomeRouter");
 
-app.use(logger('dev'));
+//log the dev tools in the console
+app.use(cors());
+if (process.env.NODE_ENV === "development") {
+    app.use(logger("dev"));
+  }
+
 app.use(express.json());
+
+//parsing form data/incoming data
+//specifying what type of post data is used
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+//route the url with /api/user to the userRouter file in the user folder
+app.use("/users", userRouter);
+app.use("/expense", expenseRouter);
+app.use("/income", incomeRouter)
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+app.all("*", function(req, res, next){
+    next(new ErrorMessageHandlerClass(`Cannot find ${req.originalUrl} on this server! Check your URL`, 404))
+})
+app.use(errorController);
 
 module.exports = app;
