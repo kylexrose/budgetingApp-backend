@@ -4,6 +4,9 @@ const incomeSchema = new mongoose.Schema({
     description: {
         type: String,
     },
+    category:{
+        type: String,
+    },
     amount: {
         type: String,
     },

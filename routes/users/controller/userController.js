@@ -80,7 +80,6 @@ async function login(req, res){
 
 async function editUser(req, res, next){
     const {username} = req.params;
-    console.log(username)
     try{
         const foundUser = await User.findOneAndUpdate({username: username}, req.body, {new : true})
         res.json({message: "profile updated", payload: foundUser})

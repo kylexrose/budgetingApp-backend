@@ -26,9 +26,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //route the url with /api/user to the userRouter file in the user folder
-app.use("/users", userRouter);
-app.use("/expense", expenseRouter);
-app.use("/income", incomeRouter)
+app.use("/api/users", userRouter);
+app.use("/api/expense", expenseRouter);
+app.use("/api/income", incomeRouter)
 
 app.all("*", function(req, res, next){
     next(new ErrorMessageHandlerClass(`Cannot find ${req.originalUrl} on this server! Check your URL`, 404))

@@ -5,7 +5,7 @@ checkIsAlphanumeric
 
 function checkIsEmailFunc(req, res, next){
     const {errorObj} = res.locals;
-    if(~checkIsEmail(req.body.email)){
+    if(!checkIsEmail(req.body.email)){
         errorObj.wrongEmailFormat = "Must put a valid email for sign-up"
     }
     next();

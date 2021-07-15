@@ -8,6 +8,12 @@ function dispatchErrorDevelopment(error, req, res){
             message: error.message,
             stack: error.stack,
         })
+    }else{
+        return res.status(error.statusCode).json({
+            status: error.status,
+            error: error, 
+            message: error.message,
+        })
     }
 }
 function dispatchErrorProduction(error, req, res){
@@ -47,7 +53,7 @@ module.exports = (err, req, res, next) =>{
     if(error.code === 11000 || error.code === 11001){
         error = handleMongoDBDuplicate(error);
     }
-
+    console.log(error)
     if(process.env.NODE_ENV === "development"){
         dispatchErrorDevelopment(error, req, res);
     }else{
