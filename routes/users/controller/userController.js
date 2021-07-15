@@ -13,18 +13,15 @@ async function signup(req, res, next){
         password,
     } = req.body;
 
-    // const {errorObj} = res.locals;
-
-    // if(Object.keys(errorObj) > 0){
-    //     return res.status(500).json({message: "failure", payload: errorObj})
-    // }
+    const {errorObj} = res.locals;
+    if(Object.keys(errorObj).length > 0){
+        return res.status(500).json({message: "failure", payload: errorObj})
+    }
 
     try{
-        console.log("try")
         let salt = await bcrypt.genSalt(12);
-        console.log("salt")
         let hashedPassword = await bcrypt.hash(password, salt);
-        console.log("hash")
+
         const createdUser = new User({
             firstName, 
             lastName,
@@ -33,7 +30,6 @@ async function signup(req, res, next){
             mobileNumber,
             password: hashedPassword,
         })
-        console.log(createdUser)
         await createdUser.save();
         res.json({message: "success - user created"});
     }catch(e){

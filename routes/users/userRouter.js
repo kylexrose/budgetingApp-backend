@@ -3,12 +3,36 @@ const router = express.Router();
 
 const {signup, login, editUser} = require("./controller/userController");
 
-//validator checks here
+const checkIsUndefined = require("./helpers/checkIsUndefined");
+const checkIsEmptyFunc = require("./helpers/checkIsEmptyFunc");
+const checkIsStrongPasswordFunc = require("./helpers/checkIsStrongPasswordFunc");
 
-router.post("/signup", signup);
+const{
+    checkIsEmailFunc,
+    checkIsAlphaFunc,
+    checkIsAlphanumericFunc,
+}= require("./helpers/authMiddleware")
+
+router.post(
+    "/signup", 
+    checkIsUndefined,
+    checkIsEmptyFunc,
+    checkIsStrongPasswordFunc,
+    checkIsEmailFunc,
+    checkIsAlphaFunc,
+    checkIsAlphanumericFunc,
+    signup);
 
 router.post("/login", login);
 
-router.put("/update-profile/:username", editUser);
+router.put(
+    "/update-profile/:username", 
+    checkIsUndefined,
+    checkIsEmptyFunc,
+    checkIsStrongPasswordFunc,
+    checkIsEmailFunc,
+    checkIsAlphaFunc,
+    checkIsAlphanumericFunc,
+    editUser);
 
 module.exports = router;
