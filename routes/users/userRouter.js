@@ -23,7 +23,11 @@ router.post(
     checkIsAlphanumericFunc,
     signup);
 
-router.post("/login", login);
+router.post(
+    "/login", 
+    checkIsUndefined, 
+    checkIsEmptyFunc, 
+    login);
 
 router.put(
     "/update-profile/:username", 

@@ -19,6 +19,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         unique: true,
     },
+    password:{
+        type: String,
+    },
     expenses: [{type:mongoose.Schema.ObjectId, ref: "expense"}],
     incomes: [{type:mongoose.Schema.ObjectId, ref: "income"}]
 })

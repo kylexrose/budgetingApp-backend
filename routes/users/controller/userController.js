@@ -51,7 +51,7 @@ async function login(req, res){
         if(!foundUser){
             res.status(400).json({
                 message:"failure",
-                payload: "Please check your email and password",
+                payload: "Please check your username and password",
             })
         }else{
             let comparedPassword = await bcrypt.compare(password, foundUser.password);
