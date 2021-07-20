@@ -10,8 +10,7 @@ const app = express();
 const ErrorMessageHandlerClass = require("./routes/utils/ErrorMessageHandlerClass");
 const errorController = require("./routes/utils/errorController");
 const userRouter = require("./routes/users/userRouter");
-const expenseRouter = require("./routes/expenses/expensesRouter");
-const incomeRouter = require("./routes/income/incomeRouter");
+const transactionRouter = require("./routes/transactions/transactionRouter");
 
 //log the dev tools in the console
 app.use(cors());
@@ -27,8 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 
 //route the url with /api/user to the userRouter file in the user folder
 app.use("/api/users", userRouter);
-app.use("/api/expense", expenseRouter);
-app.use("/api/income", incomeRouter)
+app.use("/api/transactions", transactionRouter);
 
 app.all("*", function(req, res, next){
     next(new ErrorMessageHandlerClass(`Cannot find ${req.originalUrl} on this server! Check your URL`, 404))

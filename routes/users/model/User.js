@@ -22,8 +22,7 @@ const userSchema = new mongoose.Schema({
     password:{
         type: String,
     },
-    expenses: [{type:mongoose.Schema.ObjectId, ref: "expense"}],
-    incomes: [{type:mongoose.Schema.ObjectId, ref: "income"}]
+    transactions: [{type:mongoose.Schema.ObjectId, ref: "transaction"}],
 })
 
 module.exports = mongoose.model('user', userSchema);

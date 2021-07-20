@@ -58,12 +58,12 @@ async function login(req, res){
             if (!comparedPassword){
                 res.status(400).json({
                     message: "failure",
-                    payload: "Please check your email and password"
+                    payload: "Please check your username and password"
                 })
             }else{
                 let jwtToken = jwt.sign(
                     {
-                        email: foundUser.email
+                        username: foundUser.username
                     },
                     process.env.PRIVATE_JWT_KEY,
                     {
