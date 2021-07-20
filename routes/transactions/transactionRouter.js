@@ -8,7 +8,7 @@ const {
     deleteTransactionById,
 } = require("./controller/transactionController");
 
-router.get("/get-all-transactions", jwtMiddleware, getAllTransactions);
+router.get("/get-transactions-by-month/:year/:month", jwtMiddleware, getAllTransactions);
 
 router.post("/create-new-transaction", jwtMiddleware, createNewTransaction);
 

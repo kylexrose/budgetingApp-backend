@@ -8,9 +8,11 @@ async function getAllTransactions(req, res){
         .populate({
             path: "transactions",
             model: Transaction,
+            match: {"date.year" : {$eq: +req.params.year}, "date.month" : {$eq: +req.params.month}},
+
             select: "-__v"
         })
-        .select("-email -password -firstName -lastName -__v -_id -username -transactions");
+        .select("-mobileNumber -email -password -firstName -lastName -__v -_id -username");
         res.json(payload);
     }catch(e){
         console.log(e);
@@ -19,12 +21,13 @@ async function getAllTransactions(req, res){
 
 async function createNewTransaction(req, res){
     try{
-        const {description, category, amount, type} = req.body;
+        const {description, category, amount, type, date} = req.body;
         const newTransaction = new Transaction({
             type,
             description,
             category, 
             amount,
+            date,
         })
         const savedNewTransaction = await newTransaction.save();
         const {decodedJwt} = res.locals;
