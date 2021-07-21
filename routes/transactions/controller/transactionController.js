@@ -9,11 +9,29 @@ async function getAllTransactions(req, res){
             path: "transactions",
             model: Transaction,
             match: {"date.year" : {$eq: +req.params.year}, "date.month" : {$eq: +req.params.month}},
-
             select: "-__v"
         })
         .select("-mobileNumber -email -password -firstName -lastName -__v -_id -username");
-        res.json(payload);
+        let sumObj = {
+            Income: 0,
+            Expense: 0,
+            category : {},
+        };
+        payload.transactions.map(transaction =>{
+            if(transaction.type === "Income"){
+                sumObj.Income = sumObj.Income + +transaction.amount;
+            }else{
+                if(sumObj.category[transaction.category]){
+                    sumObj.category[transaction.category] += +transaction.amount;
+                    sumObj.Expense += +transaction.amount;
+                }else{
+                    sumObj.category[transaction.category] = +transaction.amount;
+                    sumObj.Expense += +transaction.amount;
+                }
+            }
+        })
+        console.log(sumObj)
+        res.json({sumObj: sumObj, payload: payload});
     }catch(e){
         console.log(e);
     }
