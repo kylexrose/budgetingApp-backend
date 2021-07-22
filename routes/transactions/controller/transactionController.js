@@ -11,7 +11,7 @@ async function getAllTransactions(req, res){
             match: {"date.year" : {$eq: +req.params.year}, "date.month" : {$eq: +req.params.month}},
             select: "-__v"
         })
-        .select("-mobileNumber -email -password -firstName -lastName -__v -_id -username");
+        .select("-mobileNumber -email -password -firstName -lastName -__v -_id -username -categories");
         let sumObj = {
             Income: 0,
             Expense: 0,

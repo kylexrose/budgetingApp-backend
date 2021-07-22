@@ -23,6 +23,7 @@ const userSchema = new mongoose.Schema({
         type: String,
     },
     transactions: [{type:mongoose.Schema.ObjectId, ref: "transaction"}],
+    categories: [{type:mongoose.Schema.ObjectId, ref: "categories"}],
 })
 
 module.exports = mongoose.model('user', userSchema);

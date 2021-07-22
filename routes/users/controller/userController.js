@@ -29,6 +29,14 @@ async function signup(req, res, next){
             username, 
             mobileNumber,
             password: hashedPassword,
+            categories: [
+                "60f9c869eb5a75dd1f58a00e",
+                "60f9c7940e8ededcd266bc40",
+                "60f9c7bba60eb3dd07cb3c09",
+                "60f9c7d7a60eb3dd07cb3c0e",
+                "60f9c7eda60eb3dd07cb3c13",
+                "60f9c9002d9f57dd30903808"
+            ]
         })
         await createdUser.save();
         res.json({message: "success - user created"});
