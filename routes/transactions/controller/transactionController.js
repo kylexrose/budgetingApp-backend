@@ -15,13 +15,16 @@ async function getAllTransactions(req, res){
         let sumObj = {
             Income: 0,
             Expense: 0,
+            Savings: 0,
             category : {},
         };
         payload.transactions.map(transaction =>{
             if(transaction.type === "Income"){
                 sumObj.Income = sumObj.Income + +transaction.amount;
             }else{
-                if(sumObj.category[transaction.category]){
+                if(transaction.category === "Savings"){
+                    sumObj.Savings += +transaction.amount;
+                }else if(sumObj.category[transaction.category]){
                     sumObj.category[transaction.category] += +transaction.amount;
                     sumObj.Expense += +transaction.amount;
                 }else{
@@ -30,7 +33,6 @@ async function getAllTransactions(req, res){
                 }
             }
         })
-        console.log(sumObj)
         res.json({sumObj: sumObj, payload: payload});
     }catch(e){
         console.log(e);
