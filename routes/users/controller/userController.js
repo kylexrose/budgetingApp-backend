@@ -1,13 +1,11 @@
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
-
 const User = require("../model/User");
 
 async function signup(req, res, next){
     const {
         firstName,
         lastName,
-        mobileNumber,
         email,
         username,
         password,
@@ -27,7 +25,6 @@ async function signup(req, res, next){
             lastName,
             email, 
             username, 
-            mobileNumber,
             password: hashedPassword,
             categories: [
                 "60f9c869eb5a75dd1f58a00e",
@@ -86,14 +83,34 @@ async function login(req, res){
     }
 }
 
-async function editUser(req, res, next){
-    const {username} = req.params;
+async function getUserData(req, res, next){
+    const {decodedJwt} = res.locals;
     try{
-        const foundUser = await User.findOneAndUpdate({username: username}, req.body, {new : true})
-        res.json({message: "profile updated", payload: foundUser})
+        const foundUser = await User.findOne({username: decodedJwt.username});
+        res.json({payload: foundUser});
+    }catch(e){
+        error(e);
+    }
+}
+
+async function editUser(req, res, next){
+    const {decodedJwt} = res.locals;
+    try{
+        const foundUser = await User.findOne({username: decodedJwt.username})
+        let comparedPassword = await bcrypt.compare(req.body.password, foundUser.password);
+        console.log(req.body)
+        if(!comparedPassword){
+            res.status(400).json({
+                message: "failure",
+                payload: "Incorrect Password"
+            })
+        }else{
+            const updatedUser = await User.findOneAndUpdate({username: decodedJwt.username}, {email:req.body.email}, {new:true});
+            res.json({message: "success", payload: updatedUser})
+        }
     }catch(e){
         res.json({message: "error", error: e})
     }
 }
 
-module.exports = {signup, login, editUser};
+module.exports = {signup, login, editUser, getUserData};

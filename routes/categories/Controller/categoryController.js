@@ -11,7 +11,7 @@ async function getAllCategories(req, res){
             model: Category,
             select: "-__v"
         })
-        .select("-mobileNumber -email -password -firstName -lastName -__v -_id -username -transactions");
+        .select("-email -password -firstName -lastName -__v -_id -username -transactions");
         res.json(payload)
     }catch(e){
         console.log(e)

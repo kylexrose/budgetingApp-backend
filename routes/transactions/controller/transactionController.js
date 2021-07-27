@@ -1,6 +1,8 @@
 const Transaction = require("../model/Transaction");
 const User = require("../../users/model/User");
 
+
+
 async function getAllTransactions(req, res){
     try{
         const {decodedJwt} = res.locals;
@@ -11,7 +13,7 @@ async function getAllTransactions(req, res){
             match: {"date.year" : {$eq: +req.params.year}, "date.month" : {$eq: +req.params.month}},
             select: "-__v"
         })
-        .select("-mobileNumber -email -password -firstName -lastName -__v -_id -username -categories");
+        .select(" -email -password -firstName -lastName -__v -_id -username -categories");
         let sumObj = {
             Income: 0,
             Expense: 0,
@@ -41,7 +43,11 @@ async function getAllTransactions(req, res){
 
 async function createNewTransaction(req, res){
     try{
-        const {description, category, amount, type, date} = req.body;
+        const {description, category, type, date} = req.body;
+        let {amount} = req.body;
+        amount = +amount;
+        amount = amount.toFixed(2);
+        console.log(amount)
         const newTransaction = new Transaction({
             type,
             description,
