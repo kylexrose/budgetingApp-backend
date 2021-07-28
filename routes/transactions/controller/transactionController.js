@@ -4,13 +4,14 @@ const User = require("../../users/model/User");
 
 
 async function getAllTransactions(req, res){
+    const {sorted} = req.body;
     try{
         const {decodedJwt} = res.locals;
         let payload = await User.findOne({username: decodedJwt.username})
         .populate({
             path: "transactions",
             model: Transaction,
-            match: {"date.year" : {$eq: +req.params.year}, "date.month" : {$eq: +req.params.month}},
+            match: {"date.year" : {$eq: +req.params.year}, "date.month" : {$eq: +req.params.month}, type: {$in: sorted}},
             select: "-__v"
         })
         .select(" -email -password -firstName -lastName -__v -_id -username -categories");

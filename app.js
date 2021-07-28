@@ -12,6 +12,8 @@ const errorController = require("./routes/utils/errorController");
 const userRouter = require("./routes/users/userRouter");
 const transactionRouter = require("./routes/transactions/transactionRouter");
 const categoryRouter = require("./routes/categories/categoryRouter");
+const mailjetRouter = require("./routes/Mailjet/Mailjet");
+const tempRouter = require("./routes/tempIds/tempIdRouter")
 
 //log the dev tools in the console
 app.use(cors());
@@ -29,6 +31,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/users", userRouter);
 app.use("/api/transactions", transactionRouter);
 app.use("/api/categories", categoryRouter)
+app.use("/api/mailjet", mailjetRouter)
+app.use("/api/reset", tempRouter)
 
 app.all("*", function(req, res, next){
     next(new ErrorMessageHandlerClass(`Cannot find ${req.originalUrl} on this server! Check your URL`, 404))
