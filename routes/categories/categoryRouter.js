@@ -4,14 +4,16 @@ const jwtMiddleware = require("../utils/jwtMiddleware");
 const {
     getAllCategories,
     createNewCategory,
+    editCategoryById,
+    deleteCategoryById
 } = require("./controller/categoryController");
 
 router.get("/get-all-categories", jwtMiddleware, getAllCategories);
 
 router.post("/create-new-category", jwtMiddleware, createNewCategory);
 
-// router.put("/edit-transaction/:id", jwtMiddleware, editTransactionById);
+router.put("/edit-category/:id", jwtMiddleware, editCategoryById);
 
-// router.delete("/delete-transaction/:id", jwtMiddleware, deleteTransactionById);
+router.delete("/delete-category/:id", jwtMiddleware, deleteCategoryById);
 
 module.exports = router;
