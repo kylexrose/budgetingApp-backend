@@ -93,6 +93,16 @@ async function getUserData(req, res, next){
     }
 }
 
+async function getUserDataByEmail(req, res, next){
+    const {email} = req.body;
+    try{
+        const foundUser = await User.findOne({email: email});
+        res.json({firstName: foundUser.firstName, lastName: foundUser.lastName})
+    }catch(e){
+        res.json({error: e})
+    }
+}
+
 async function editUser(req, res, next){
     const {decodedJwt} = res.locals;
     try{
@@ -113,4 +123,4 @@ async function editUser(req, res, next){
     }
 }
 
-module.exports = {signup, login, editUser, getUserData};
+module.exports = {signup, login, editUser, getUserData, getUserDataByEmail};

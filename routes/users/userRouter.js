@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const {signup, login, getUserData, editUser} = require("./controller/userController");
+const {signup, login, getUserData, getUserDataByEmail ,editUser} = require("./controller/userController");
 
 const checkIsUndefined = require("./helpers/checkIsUndefined");
 const checkIsEmptyFunc = require("./helpers/checkIsEmptyFunc");
@@ -15,6 +15,8 @@ const{
 }= require("./helpers/authMiddleware")
 
 router.get("/get-user-data", jwtMiddleware, getUserData)
+
+router.get("/get-user-by-email", getUserDataByEmail)
 
 router.post(
     "/signup", 

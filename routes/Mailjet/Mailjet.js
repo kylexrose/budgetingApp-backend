@@ -37,8 +37,35 @@ router.post("/reset-password", createTempId, (req, res, next)=>{
           ],
           "Subject": "Brutal Budget Password Reset",
           "TextPart": "",
-          "HTMLPart":`<h3>Hey ${req.body.firstName}, please click <a href=
-              ${process.env.BASE_URL + "/reset-password" + `?token=${jwtToken}`}>here</a> to reset your password.</h3>`,
+          "HTMLPart":`
+          <div style="background-image: linear-gradient(to bottom right,#f3d2b5,#f2b8a3);
+          height: 100%;
+          margin: 0%;
+          background-repeat: no-repeat;
+          background-attachment: fixed;">
+        
+      <div className="navbar" style="background-color: #f28c8f}, height: 75px,
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          color: white;">
+                      <div className="menuIcon">
+                          <img src={menu} alt=""/>
+                      </div>
+                      <Link to="/overview" className="logoContainer" style="display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 300px;">
+            
+                          <p style="font-size: 20pt;">Brutal Budget.</p>
+                      </Link>
+                      <div className="right-side-nav">
+                      </div>
+                  </div>
+                  <h3>Hey ${req.body.firstName}, please click <a href=
+                    ${process.env.BASE_URL + "/reset-password" + `?token=${jwtToken}`}>here</a> to reset your password.</h3>
+      </div>`,
           "CustomID": "AppGettingStartedTest"
         }
       ]
