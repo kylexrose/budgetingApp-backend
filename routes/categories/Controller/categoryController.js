@@ -42,7 +42,6 @@ async function editCategoryById(req,res, next){
 
 async function deleteCategoryById(req, res, next){
     try{
-        console.log(req.params.id)
         const deletedCategory = await Category.findByIdAndRemove(req.params.id);
         const foundUser = await User.findOne({username: res.locals.decodedJwt.username})
         const newCategoryArray = await foundUser.categories.filter(item=> item !== req.params.id)

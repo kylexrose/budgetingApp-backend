@@ -108,7 +108,6 @@ async function editUser(req, res, next){
     try{
         const foundUser = await User.findOne({username: decodedJwt.username})
         let comparedPassword = await bcrypt.compare(req.body.password, foundUser.password);
-        console.log(req.body)
         if(!comparedPassword){
             res.status(400).json({
                 message: "failure",

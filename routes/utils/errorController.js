@@ -35,9 +35,6 @@ function handleMongoDBDuplicate(err) {
     let errorMessageDuplicateKey = Object.keys(err.keyValue)[0];
     let errorMessageDuplicateValue = Object.values(err.keyValue)[0];
 
-    console.log(errorMessageDuplicateKey);
-    console.log(errorMessageDuplicateValue);
-
     //we have parse some data in here
     let message = `${errorMessageDuplicateKey} - ${errorMessageDuplicateValue} is taken please choose another one`;
     return new ErrorMessageHandlerClass(message, 400);

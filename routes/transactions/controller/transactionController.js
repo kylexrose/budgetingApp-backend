@@ -48,7 +48,6 @@ async function createNewTransaction(req, res){
         let {amount} = req.body;
         amount = +amount;
         amount = amount.toFixed(2);
-        console.log(amount)
         const newTransaction = new Transaction({
             type,
             description,
