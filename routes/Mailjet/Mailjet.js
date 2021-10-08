@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const {createTempId, deleteTempId} = require('../tempIds/Controller/tempIdController')
+
+let BASE_URL = process.env.NODE_ENV === "development" 
+? "http://localhost:3000" 
+: "brutalbudget.kylexrose.com"
+
 const mailjet = require ('node-mailjet')
     .connect(
         process.env.MAILJET_API, 
@@ -64,7 +69,7 @@ router.post("/reset-password", createTempId, (req, res, next)=>{
                       </div>
                   </div>
                   <h3>Hey ${req.body.firstName}, please click <a href=
-                    ${process.env.BASE_URL + "/reset-password" + `?token=${jwtToken}`}>here</a> to reset your password.</h3>
+                    ${BASE_URL + "/reset-password" + `?token=${jwtToken}`}>here</a> to reset your password.</h3>
       </div>`,
           "CustomID": "AppGettingStartedTest"
         }
