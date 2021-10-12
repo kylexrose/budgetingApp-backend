@@ -6,7 +6,7 @@ const {
     createNewCategory,
     editCategoryById,
     deleteCategoryById
-} = require("./controller/categoryController");
+} = require("./Controller/categoryController");
 
 router.get("/get-all-categories", jwtMiddleware, getAllCategories);
 
