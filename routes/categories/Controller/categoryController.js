@@ -13,7 +13,7 @@ async function getAllCategories(req, res){
         .select("-email -password -firstName -lastName -__v -_id -username -transactions");
         res.json(payload)
     }catch(e){
-        console.log(e)
+        res.json({error: e})
     }
 }
 
@@ -27,7 +27,7 @@ async function createNewCategory(req,res){
         targetUser.save();
         res.json( saveNew );
     }catch(e){
-        console.log(e)
+        res.json({error: e})
     }
 }
 
@@ -36,7 +36,7 @@ async function editCategoryById(req,res, next){
         const updatedCategory = await Category.findByIdAndUpdate(req.params.id, {name: req.body.name})
         res.json({message: "success", payload: updatedCategory})
     }catch(e){
-        console.log(e)
+        res.json({error: e})
     }
 }
 
@@ -48,7 +48,7 @@ async function deleteCategoryById(req, res, next){
         await User.findByIdAndUpdate(foundUser._id, {categories: newCategoryArray})
         res.json({message: "category deleted", payload: deletedCategory})
     }catch(e){
-        console.log(e);
+        res.json({error: e})
     }
 }
 

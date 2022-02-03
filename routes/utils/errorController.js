@@ -50,7 +50,6 @@ module.exports = (err, req, res, next) =>{
     if(error.code === 11000 || error.code === 11001){
         error = handleMongoDBDuplicate(error);
     }
-    console.log(error)
     if(process.env.NODE_ENV === "development"){
         dispatchErrorDevelopment(error, req, res);
     }else{

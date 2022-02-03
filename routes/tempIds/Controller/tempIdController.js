@@ -12,7 +12,7 @@ async function changePassword(req, res, next){
         await TempId.findByIdAndRemove(res.locals.tempId)
         res.json({message: "success", payload: updateUser})
     }catch(e){
-        console.log(e)
+        res.json({error: e})
     }
 }
 
@@ -24,7 +24,7 @@ async function createTempId(req, res, next){
         res.locals.tempId = createdTempId._id;
         next()
     }catch(e){
-        console.log(e)
+        res.json({error: e})
     }
 }
 
@@ -33,7 +33,7 @@ async function deleteTempId(req, res, next){
         const deletedId = await TempId.findByIdAndRemove(res.locals.tempId)
         res.json({message: "ID deleted", payload: deletedId})
     }catch(e){
-        console.log(e)
+        res.json({error: e})
     }
 }
 

@@ -38,7 +38,7 @@ async function getAllTransactions(req, res){
         })
         res.json({sumObj: sumObj, payload: payload});
     }catch(e){
-        console.log(e);
+        res.json({error: e})
     }
 }
 
@@ -64,7 +64,6 @@ async function createNewTransaction(req, res){
         res.json({savedNewTransaction})
     }catch(e){
         res.status(500);
-        console.log(e);
     }
 }
 
@@ -75,7 +74,6 @@ async function editTransactionById(req, res){
         res.json({message: "success", payload: updatedTransaction})
     }catch(e){
         res.status(500);
-        console.log(e);
     }
 }
 
@@ -91,7 +89,6 @@ async function deleteTransactionById(req, res){
         res.json({message: "success - Transaction removed"});
     }catch(e){
         res.status(500);
-        console.log(e)
     }
 }
 
