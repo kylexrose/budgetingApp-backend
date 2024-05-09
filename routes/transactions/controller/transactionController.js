@@ -7,21 +7,26 @@ async function getAllTransactions(req, res){
     const {sorted} = req.body;
     try{
         const {decodedJwt} = res.locals;
-        let payload = await User.findOne({username: decodedJwt.username})
-        .populate({
-            path: "transactions",
-            model: Transaction,
-            match: {"date.year" : {$eq: +req.params.year}, "date.month" : {$eq: +req.params.month}, type: {$in: sorted}},
-            select: "-__v"
+        let payload = await Transaction.find({
+            user: decodedJwt.username, 
+            "date.year" : {$eq: +req.params.year}, 
+            "date.month" : {$eq: +req.params.month}, 
+            // type: {$in: sorted }
         })
-        .select(" -email -password -firstName -lastName -__v -_id -username -categories");
+        // .populate({
+        //     path: "transactions",
+        //     model: Transaction,
+        //     match: {"date.year" : {$eq: +req.params.year}, "date.month" : {$eq: +req.params.month}, type: {$in: sorted}},
+        //     select: "-__v"
+        // })
+        // .select(" -email -password -firstName -lastName -__v -_id -username -categories");
         let sumObj = {
             Income: 0,
             Expense: 0,
             Savings: 0,
             category : {},
         };
-        payload.transactions.map(transaction =>{
+        payload.map(transaction =>{
             if(transaction.type === "Income"){
                 sumObj.Income = sumObj.Income + +transaction.amount;
             }else{
@@ -44,25 +49,32 @@ async function getAllTransactions(req, res){
 
 async function createNewTransaction(req, res){
     try{
-        const {description, category, type, date} = req.body;
-        let {amount} = req.body;
-        amount = +amount;
-        amount = amount.toFixed(2);
-        const newTransaction = new Transaction({
-            type,
-            description,
-            category, 
-            amount,
-            date,
-        })
-        const savedNewTransaction = await newTransaction.save();
         const {decodedJwt} = res.locals;
-        const targetUser = await User.findOne({username: decodedJwt.username});
-        targetUser.transactions.push(savedNewTransaction._id);
-
-        await targetUser.save();
-        res.json({savedNewTransaction})
-    }catch(e){
+        const {description, category, type, date} = req.body;
+        const user = await User.findOne({username: decodedJwt.username})
+        if(!user){
+            res.json({message: 'nope'})
+        }else{
+            let {amount} = req.body;
+            amount = +amount;
+            amount = amount.toFixed(2);
+            const newTransaction = new Transaction({
+                type,
+                description,
+                category, 
+                amount,
+                date,
+                user: user.username
+            })
+            const savedNewTransaction = await newTransaction.save();
+            
+            // const targetUser = await User.findOne({username: decodedJwt.username});
+            // targetUser.transactions.push(savedNewTransaction._id);
+            
+            // await targetUser.save();
+            res.json({savedNewTransaction})
+        }
+        }catch(e){
         res.status(500);
     }
 }

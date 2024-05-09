@@ -19,7 +19,6 @@ async function signup(req, res, next){
     try{
         let salt = await bcrypt.genSalt(12);
         let hashedPassword = await bcrypt.hash(password, salt);
-
         const createdUser = new User({
             firstName, 
             lastName,
@@ -33,7 +32,13 @@ async function signup(req, res, next){
         await createdUser.save();
         res.json({message: "success - user created"});
     }catch(e){
-        next(e);
+        console.log(e.message)
+        if(e.message.includes("E11000")){
+            const duplicateKey = Object.keys(e.keyValue)[0]
+            e.message = `The ${duplicateKey} ${e.keyValue[duplicateKey]} already exists, please log in.`
+        }
+        console.log(e.message)
+        res.status(500).json({message: "Error", error: e.message})
     }
 }
 

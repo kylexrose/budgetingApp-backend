@@ -17,6 +17,10 @@ const transactionSchema = new mongoose.Schema({
     description: {
         type: String,
     },
+    user: {
+        type: String,
+        required: true
+    }
 })
 
 module.exports = mongoose.model('transaction', transactionSchema)
